@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Price Scraper</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Orbitron:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <header>
+        <h1>🛒 Product Price Scraper</h1>
+        <button id="toggle-dark" title="Toggle Dark Mode">🌙</button>
+    </header>
+
+    <div class="funny-image">
+        <img src="{{ url_for('static', filename='funny.png') }}" alt="Funny Illustration">
+    </div>
+
+    <form method="POST">
+        <input type="text" name="query" placeholder="Enter product name" required>
+        <select name="site">
+            <option value="snapdeal">Snapdeal</option>
+            <option value="indiamart">Indiamart</option>
+        </select>
+        <button type="submit">Search</button>
+    </form>
+
+    {% if products %}
+        <div class="product-container">
+            {% for product in products %}
+                <div class="product-card">
+                    <img src="{{ product.image }}" alt="Product Image">
+                    <div class="product-title">{{ product.title }}</div>
+                    <div class="product-price">{{ product.price }}</div>
+                    <div class="product-rating">{{ product.rating }}</div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        {% if request.method == 'POST' %}
+            <div class="no-results">😕 No products found or an error occurred.</div>
+        {% endif %}
+    {% endif %}
+
+    <script>
+        // Dark Mode Toggle
+        const toggle = document.getElementById('toggle-dark');
+        toggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+        });
+    </script>
+
+</body>
+</html>
